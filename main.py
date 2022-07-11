@@ -8,10 +8,10 @@ import matplotlib.pyplot as plt
 
 
 def main():
-    initial_size = 100
+    initial_size = 10000
     average_person_death_age = 60
     population_proportion_mutated = 0.1
-    number_of_generations = 100
+    number_of_generations = 10000
 
     population = Population(
         initial_size=initial_size,

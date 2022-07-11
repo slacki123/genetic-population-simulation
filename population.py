@@ -33,7 +33,6 @@ class Population:
         all_females = self.get_all_females()
         all_males = self.get_all_males()
 
-        all_offspring = []
         for female in all_females:
             # Skip if this female already had her max number of offspring she can manage
             if female.number_of_offspring >= female.max_offspring or female.reproductive_age > female.age:
@@ -42,9 +41,7 @@ class Population:
             random_male_index = random.randint(0, len(all_males) - 1)
             random_male = all_males[random_male_index]
             offspring = random_male.mate(female)
-            all_offspring.append(offspring)
-
-        self.population = self.population + all_offspring
+            self.population.append(offspring)
 
     def add_some_genetic_mutations(self, population_proportion: float):
         if population_proportion <= 0 or population_proportion > 1:
