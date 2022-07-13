@@ -1,6 +1,8 @@
 # This is a sample Python script.
 import random
 
+import numpy
+
 from population import Population
 
 import constants as const
@@ -11,11 +13,13 @@ def main():
     initial_size = 10000
     average_person_death_age = 60
     population_proportion_mutated = 0.1
-    number_of_generations = 10000
+    number_of_generations = 1000
+    average_number_of_children = 2
 
     population = Population(
         initial_size=initial_size,
-        average_person_death_age=average_person_death_age)
+        average_person_death_age=average_person_death_age,
+        average_number_of_children=average_number_of_children)
 
     population_sizes_at_varying_generations = []
     people_with_bad_traits_ratio = []
@@ -26,10 +30,7 @@ def main():
         print(f"People with bad trait: {people_with_bad_trait} with ratio {people_with_bad_trait/(population.size()+1)}")
         people_with_bad_traits_ratio.append(0 if population.size() == 0 else people_with_bad_trait/population.size())
 
-        population.eliminate_persons_with_bad_genes()
-
         population.reproduce_generation()
-        # population.add_some_genetic_mutations(population_proportion=population_proportion_mutated)
 
         population.age_population()
         population.eliminate_old_persons()
@@ -38,11 +39,13 @@ def main():
         old_people.append(len(population.get_all_people_older_than(40)))
 
         population_sizes_at_varying_generations.append(population.size())
+#        print(f"Average children: {sum([person.number_of_offspring for person in population.get_all_reproductive_females()]) / len(population.get_all_reproductive_females())}")
 
     print(f"Population size: {population.size()}")
     print(f"People with blue eyes: {len(population.get_all_people_exhibiting_trait(const.HAS_BLUE_EYES_GENE))}")
     print(f"People with blonde hair: {len(population.get_all_people_exhibiting_trait(const.HAS_BLONDE_HAIR_GENE))}")
     print(f"People who cannot reproduce: {len(population.get_all_people_exhibiting_trait(const.CANNOT_REPRODUCE_GENE))}")
+    print(f"People who die early: {len(population.get_all_people_exhibiting_trait(const.PREMATURE_DEATH_GENE))}")
 
     plt.xlabel('Generation number')
     plt.title(f"Average death age: {average_person_death_age}, population mutation proportion: {population_proportion_mutated}")
