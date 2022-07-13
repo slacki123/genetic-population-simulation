@@ -55,11 +55,16 @@ class Person:
             offspring_genes[gene_name] = offspring_gene
 
         max_offspring_offspring = np.random.normal(2, 1)  # TODO: make this a function of the population's resources
+        # if offspring_genes[const.MORE_LIKELY_FOR_EXTRA_CHILD_GENE].exhibits_trait():
+        #     max_offspring_offspring = max_offspring_offspring + 0.1
+        # TODO: Extra child gene likelihood makes the population explode too much.
+        # Need a mechanism to punish having too many offspring
         if offspring_genes[const.CANNOT_REPRODUCE_GENE].exhibits_trait():
             max_offspring_offspring = 0
         death_age = np.random.normal((person.death_age + self.death_age) / 2)
         if offspring_genes[const.PREMATURE_DEATH_GENE].exhibits_trait():
-            death_age = np.random.normal(16, 1)
+            death_age = np.random.normal(const.PREMATURE_DEATH_AGE, 1)
+
         parents = (self, person)
         offspring = Person(offspring_genes, 0, death_age, round(max_offspring_offspring), parents)
         self.increment_number_of_offspring()
@@ -86,7 +91,7 @@ class Person:
     def get_random_person(death_age=100, age=0, max_offspring=5):
         person_genes = {
             const.CANNOT_REPRODUCE_GENE: PersonGene.get_random_gene(const.CANNOT_REPRODUCE_GENE),
-            const.HAS_BLUE_EYES_GENE: PersonGene.get_random_gene(const.HAS_BLUE_EYES_GENE),
+            const.MORE_LIKELY_FOR_EXTRA_CHILD_GENE: PersonGene.get_random_gene(const.MORE_LIKELY_FOR_EXTRA_CHILD_GENE),
             const.HAS_BLONDE_HAIR_GENE: PersonGene.get_random_gene(const.HAS_BLONDE_HAIR_GENE),
             const.EARLY_BALDING_GENE: PersonGene.get_random_gene(const.EARLY_BALDING_GENE),
             const.PREMATURE_DEATH_GENE: PersonGene.get_random_gene(const.PREMATURE_DEATH_GENE)
